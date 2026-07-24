@@ -1,4 +1,3 @@
-// 1. Define the shape of a single timeline item
 export interface TimelineItem {
   id: number;
   title: string;
@@ -8,8 +7,13 @@ export interface TimelineItem {
   icon: string;
 }
 
-// 2. Define the props accepted by TimelineCard
 export interface TimelineCardProps {
   data: TimelineItem;
   isLast: boolean;
+}
+
+export interface TimelineCardProps {
+  data: TimelineItem;
+  isLast: boolean;
+  onUpdate: (updatedItem: TimelineItem) => void;
 }
