@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Timeline.css';
 import { TimelineCardProps, TimelineItem } from '../interfaces';
+import { formatDateForDisplay, formatToInputDate, formatToUTC } from '../utils/dateUtils';
 
 const TimelineCard: React.FC<TimelineCardProps> = ({
   data,
@@ -20,7 +21,11 @@ const TimelineCard: React.FC<TimelineCardProps> = ({
 
   const handleSave = () => {
     if (!isAuthenticated) return;
-    onUpdate(formData);
+    const updatedData = {
+      ...formData,
+      date: formatToUTC(formData.date),
+    };
+    onUpdate(updatedData);
     setIsEditing(false);
   };
 
@@ -64,12 +69,11 @@ const TimelineCard: React.FC<TimelineCardProps> = ({
                 placeholder="Category"
               />
               <input
-                type="text"
+                type="date"
                 name="date"
                 className="timeline-input-small"
-                value={formData.date}
+                value={formatToInputDate(formData.date)}
                 onChange={handleChange}
-                placeholder="Date"
               />
             </div>
 
@@ -140,7 +144,7 @@ const TimelineCard: React.FC<TimelineCardProps> = ({
             <div className="timeline-card-header">
               <span className="timeline-badge">{data.category}</span>
               <div className="header-right">
-                <time className="timeline-date">{data.date}</time>
+                <time className="timeline-date">{formatDateForDisplay(data.date)}</time>
                 {isAuthenticated && (
                   <button
                     type="button"

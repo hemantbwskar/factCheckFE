@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import './Timeline.css';
-import { AddCardProps, TimelineItem } from '../interfaces';
+import { AddCardProps } from '../interfaces';
+import { formatToInputDate, formatToUTC, getTodayInputDate } from '../utils/dateUtils';
 
-const INITIAL_STATE = {
+const getInitialState = () => ({
   title: '',
-  date: '',
+  date: getTodayInputDate(),
   category: '',
   description: '',
   icon: '🚀',
-};
+});
 
 const AddCardModal: React.FC<AddCardProps> = ({ onAdd, onCancel }) => {
-  const [formData, setFormData] = useState(INITIAL_STATE);
+  const [formData, setFormData] = useState(getInitialState);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -23,8 +24,12 @@ const AddCardModal: React.FC<AddCardProps> = ({ onAdd, onCancel }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.title.trim()) return;
-    onAdd(formData);
-    setFormData(INITIAL_STATE);
+    const finalData = {
+      ...formData,
+      date: formatToUTC(formData.date),
+    };
+    onAdd(finalData);
+    setFormData(getInitialState());
   };
 
   return (
@@ -60,12 +65,11 @@ const AddCardModal: React.FC<AddCardProps> = ({ onAdd, onCancel }) => {
               required
             />
             <input
-              type="text"
+              type="date"
               name="date"
               className="timeline-input-small"
-              value={formData.date}
+              value={formatToInputDate(formData.date)}
               onChange={handleChange}
-              placeholder="Date (e.g. Jun 15, 2026)"
               required
             />
           </div>

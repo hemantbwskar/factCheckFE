@@ -204,6 +204,46 @@
   font-family: inherit;
   line-height: 1.5;
 }
+
+/* Custom Date Input Styling */
+input[type="date"].timeline-input-small {
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #1e293b;
+  background-color: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 7px 10px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+input[type="date"].timeline-input-small:hover {
+  background-color: #ffffff;
+  border-color: #94a3b8;
+}
+
+input[type="date"].timeline-input-small:focus {
+  background-color: #ffffff;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Custom Calendar Picker Icon Styling */
+input[type="date"].timeline-input-small::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 4px;
+  filter: invert(30%) sepia(85%) saturate(1200%) hue-rotate(200deg);
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+input[type="date"].timeline-input-small::-webkit-calendar-picker-indicator:hover {
+  background-color: #eff6ff;
+  transform: scale(1.1);
+}
 /* Actions area inside card body */
 .timeline-card-actions {
   display: flex;
