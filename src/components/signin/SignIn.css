@@ -12,15 +12,15 @@
 .auth-card {
   width: 100%;
   border-radius: 1rem;
-  border: 1px solid #e5e7eb;
-  background-color: #ffffff;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-card);
+  box-shadow: var(--shadow-card);
   overflow: hidden;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.25s ease, border-color 0.25s ease;
 }
 
 .auth-card:hover {
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
 }
 
 /* Top Badge Node Icon */
@@ -34,7 +34,7 @@
   background-color: #2563eb;
   color: #ffffff;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-  outline: 4px solid #ffffff;
+  outline: 4px solid var(--bg-primary);
   margin: 1.5rem auto 0 auto;
   font-size: 1.5rem;
 }
@@ -48,11 +48,11 @@
 .auth-badge {
   display: inline-block;
   border-radius: 0.375rem;
-  background-color: #dbeafe;
+  background-color: var(--badge-bg);
   padding: 0.25rem 0.625rem;
   font-size: 0.75rem;
   font-weight: 700;
-  color: #1d4ed8;
+  color: var(--badge-text);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 0.5rem;
@@ -61,13 +61,13 @@
 .auth-title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #111827;
+  color: var(--text-primary);
   margin: 0.25rem 0 0.5rem 0;
 }
 
 .auth-subtitle {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--text-secondary);
   margin: 0;
 }
 
@@ -89,7 +89,7 @@
 .form-label {
   font-size: 0.875rem;
   font-weight: 600;
-  color: #374151;
+  color: var(--text-primary);
 }
 
 .input-wrapper {
@@ -101,7 +101,7 @@
 .input-icon {
   position: absolute;
   left: 0.875rem;
-  color: #9ca3af;
+  color: var(--text-muted);
   pointer-events: none;
   display: flex;
   align-items: center;
@@ -111,14 +111,14 @@
 .auth-input {
   width: 100%;
   padding: 0.625rem 0.875rem 0.625rem 2.5rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--border-input);
   border-radius: 0.5rem;
   font-size: 0.875rem;
   box-sizing: border-box;
   outline: none;
-  background-color: #ffffff;
-  color: #111827;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  background-color: var(--bg-input);
+  color: var(--text-primary);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.25s ease;
 }
 
 .auth-input:focus {
@@ -138,7 +138,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #4b5563;
+  color: var(--text-secondary);
   cursor: pointer;
   user-select: none;
 }
@@ -193,9 +193,9 @@
 
 /* Error Alert */
 .auth-error {
-  background-color: #fef2f2;
-  border: 1px solid #fca5a5;
-  color: #dc2626;
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #ef4444;
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
   font-size: 0.875rem;
@@ -208,19 +208,19 @@
 .demo-hint {
   margin-top: 1.25rem;
   padding: 0.75rem 1rem;
-  background-color: #f8fafc;
-  border: 1px dashed #cbd5e1;
+  background-color: var(--bg-primary);
+  border: 1px dashed var(--border-input);
   border-radius: 0.5rem;
   font-size: 0.8rem;
-  color: #64748b;
+  color: var(--text-secondary);
   text-align: center;
 }
 
 .demo-hint code {
-  background-color: #e2e8f0;
+  background-color: var(--border-color);
   padding: 0.125rem 0.375rem;
   border-radius: 0.25rem;
-  color: #334155;
+  color: var(--text-primary);
   font-family: inherit;
   font-weight: 600;
 }

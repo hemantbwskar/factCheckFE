@@ -19,11 +19,12 @@
   top: 2rem;
   width: 100px;
   flex-shrink: 0;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--sidebar-bg);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 0.875rem 0.625rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-card);
+  transition: background-color 0.25s ease, border-color 0.25s ease;
 }
 
 .sidebar-heading {
@@ -31,7 +32,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #94a3b8;
+  color: var(--text-muted);
   margin: 0 0 0.625rem 0.25rem;
 }
 
@@ -48,7 +49,7 @@
   text-align: center;
   font-size: 0.875rem;
   font-weight: 600;
-  color: #475569;
+  color: var(--text-secondary);
   background: transparent;
   border: 1px solid transparent;
   border-radius: 6px;
@@ -57,8 +58,8 @@
 }
 
 .year-nav-btn:hover {
-  background-color: #f1f5f9;
-  color: #1e293b;
+  background-color: rgba(148, 163, 184, 0.15);
+  color: var(--text-primary);
 }
 
 .year-nav-btn.active {
@@ -84,7 +85,7 @@
   right: 0;
   top: 50%;
   height: 2px;
-  background: #e2e8f0;
+  background: var(--border-color);
   z-index: 1;
 }
 
@@ -149,7 +150,7 @@
 .timeline-title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #111827;
+  color: var(--text-primary);
   margin: 0;
 }
 
@@ -193,7 +194,7 @@
   margin-left: -0.125rem;
   height: 100%;
   width: 0.25rem;
-  background-color: #e5e7eb;
+  background-color: var(--line-color);
 }
 
 /* Icon Badge Node */
@@ -210,7 +211,7 @@
   background-color: #2563eb;
   color: #ffffff;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-  outline: 4px solid #ffffff;
+  outline: 4px solid var(--bg-primary);
 }
 
 .timeline-icon {
@@ -224,7 +225,8 @@
   text-align: center;
   border-radius: 50%;
   border: 1px solid #93c5fd;
-  background: #ffffff;
+  background: var(--bg-input);
+  color: var(--text-primary);
   font-size: 1rem;
   padding: 0;
   outline: none;
@@ -234,16 +236,16 @@
 .timeline-card {
   flex: 1;
   border-radius: 1rem;
-  border: 1px solid #e5e7eb;
-  background-color: #ffffff;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-card);
+  box-shadow: var(--shadow-card);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.25s ease, border-color 0.25s ease;
   overflow: hidden;
 }
 
 .timeline-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
 }
 
 /* Card Header */
@@ -251,19 +253,19 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid #f3f4f6;
-  background-color: rgba(249, 250, 251, 0.5);
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--bg-card-header);
   padding: 1rem 1.5rem;
   gap: 12px;
 }
 
 .timeline-badge {
   border-radius: 0.375rem;
-  background-color: #dbeafe;
+  background-color: var(--badge-bg);
   padding: 0.25rem 0.625rem;
   font-size: 0.75rem;
   font-weight: 700;
-  color: #1d4ed8;
+  color: var(--badge-text);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -271,7 +273,7 @@
 .timeline-date {
   font-size: 0.75rem;
   font-weight: 600;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 /* Container for Date + Pen Icon */
@@ -289,7 +291,7 @@
 .timeline-card-title {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #111827;
+  color: var(--text-primary);
   margin: 0;
 }
 
@@ -297,7 +299,7 @@
   margin-top: 0.5rem;
   font-size: 0.875rem;
   line-height: 1.625;
-  color: #4b5563;
+  color: var(--text-secondary);
 }
 
 /* Edit Form Styling */
@@ -312,12 +314,14 @@
 .timeline-textarea-description {
   width: 100%;
   padding: 8px 12px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--border-input);
+  background-color: var(--bg-input);
+  color: var(--text-primary);
   border-radius: 6px;
   font-size: 0.875rem;
   box-sizing: border-box;
   outline: none;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s ease, background-color 0.25s ease;
 }
 
 .timeline-input-small:focus,
@@ -343,9 +347,9 @@ select.timeline-select-small {
   font-family: inherit;
   font-size: 0.85rem;
   font-weight: 600;
-  color: #1e293b;
-  background-color: #f8fafc;
-  border: 1px solid #cbd5e1;
+  color: var(--text-primary);
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-input);
   border-radius: 8px;
   padding: 7px 30px 7px 10px;
   cursor: pointer;
@@ -358,12 +362,12 @@ select.timeline-select-small {
 }
 
 select.timeline-select-small:hover {
-  background-color: #ffffff;
+  background-color: var(--bg-card);
   border-color: #94a3b8;
 }
 
 select.timeline-select-small:focus {
-  background-color: #ffffff;
+  background-color: var(--bg-card);
   border-color: #2563eb;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
@@ -373,9 +377,9 @@ input[type="date"].timeline-input-small {
   font-family: inherit;
   font-size: 0.85rem;
   font-weight: 500;
-  color: #1e293b;
-  background-color: #f8fafc;
-  border: 1px solid #cbd5e1;
+  color: var(--text-primary);
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-input);
   border-radius: 8px;
   padding: 7px 10px;
   cursor: pointer;
@@ -384,12 +388,12 @@ input[type="date"].timeline-input-small {
 }
 
 input[type="date"].timeline-input-small:hover {
-  background-color: #ffffff;
+  background-color: var(--bg-card);
   border-color: #94a3b8;
 }
 
 input[type="date"].timeline-input-small:focus {
-  background-color: #ffffff;
+  background-color: var(--bg-card);
   border-color: #2563eb;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
@@ -404,9 +408,10 @@ input[type="date"].timeline-input-small::-webkit-calendar-picker-indicator {
 }
 
 input[type="date"].timeline-input-small::-webkit-calendar-picker-indicator:hover {
-  background-color: #eff6ff;
+  background-color: rgba(37, 99, 235, 0.15);
   transform: scale(1.1);
 }
+
 /* Actions area inside card body */
 .timeline-card-actions {
   display: flex;
@@ -452,24 +457,12 @@ input[type="date"].timeline-input-small::-webkit-calendar-picker-indicator:hover
 }
 
 /* Base style for Header Icon Buttons */
-.icon-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-}
-
 .edit-btn {
-  color: #64748b;
+  color: var(--text-secondary);
 }
 
 .edit-btn:hover {
-  background-color: #f1f5f9;
+  background-color: rgba(148, 163, 184, 0.15);
   color: #2563eb;
 }
 
@@ -480,7 +473,7 @@ input[type="date"].timeline-input-small::-webkit-calendar-picker-indicator:hover
 
 .timeline-add-item .timeline-card {
   border: 2px dashed #3b82f6;
-  background-color: #f8fafc;
+  background-color: var(--bg-card);
 }
 
 @keyframes cardHighlightPulse {
@@ -493,8 +486,8 @@ input[type="date"].timeline-input-small::-webkit-calendar-picker-indicator:hover
     box-shadow: 0 0 0 5px rgba(59, 130, 246, 0.5), 0 20px 25px -5px rgba(0, 0, 0, 0.15);
   }
   100% {
-    border-color: #e5e7eb;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border-color: var(--border-color);
+    box-shadow: var(--shadow-card);
   }
 }
 
@@ -527,7 +520,7 @@ input[type="date"].timeline-input-small::-webkit-calendar-picker-indicator:hover
 .timeline-spinner {
   width: 48px;
   height: 48px;
-  border: 4px solid #e2e8f0;
+  border: 4px solid var(--border-color);
   border-top-color: #2563eb;
   border-right-color: #3b82f6;
   border-radius: 50%;
@@ -547,7 +540,7 @@ input[type="date"].timeline-input-small::-webkit-calendar-picker-indicator:hover
 .timeline-loading-text {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #64748b;
+  color: var(--text-secondary);
   letter-spacing: 0.03em;
   animation: pulseText 1.5s ease-in-out infinite;
 }

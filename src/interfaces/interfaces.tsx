@@ -26,6 +26,8 @@ export interface AddCardProps {
 export interface NavbarProps {
   user: { email?: string; username?: string; name: string } | null;
   onLogout: () => void;
+  theme?: 'light' | 'dark';
+  onToggleTheme?: () => void;
 }
 
 export interface User {

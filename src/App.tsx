@@ -6,9 +6,19 @@ import SignIn from './components/signin/SignIn';
 import Navbar from './components/nav/Navbar';
 import { User } from './interfaces/interfaces';
 import { APP_ROUTES } from './config/api';
+import { Theme, applyTheme, getInitialTheme } from './utils/themeUtils';
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
+  const [theme, setTheme] = useState<Theme>(getInitialTheme);
+
+  useEffect(() => {
+    applyTheme(theme);
+  }, [theme]);
+
+  const handleToggleTheme = () => {
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  };
 
   useEffect(() => {
     // Check if user info is stored in localStorage or sessionStorage
@@ -36,8 +46,13 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen bg-gray-50 flex flex-col">
-        <Navbar user={user} onLogout={handleLogout} />
+      <div className="app-layout min-h-screen flex flex-col">
+        <Navbar
+          user={user}
+          onLogout={handleLogout}
+          theme={theme}
+          onToggleTheme={handleToggleTheme}
+        />
         <main className="flex-1 py-8">
           <Routes>
             <Route

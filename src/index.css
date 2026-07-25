@@ -1,3 +1,37 @@
+:root {
+  --bg-primary: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-card-header: rgba(249, 250, 251, 0.6);
+  --bg-input: #ffffff;
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --text-muted: #64748b;
+  --border-color: #e5e7eb;
+  --border-input: #d1d5db;
+  --navbar-bg: #ffffff;
+  --sidebar-bg: #ffffff;
+  --badge-bg: #dbeafe;
+  --badge-text: #1d4ed8;
+  --line-color: #e5e7eb;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #0f172a;
+  --bg-card: #1e293b;
+  --bg-card-header: rgba(15, 23, 42, 0.5);
+  --bg-input: #0f172a;
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --border-color: #334155;
+  --border-input: #475569;
+  --navbar-bg: #1e293b;
+  --sidebar-bg: #1e293b;
+  --badge-bg: #1e3a8a;
+  --badge-text: #93c5fd;
+  --line-color: #334155;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,6 +39,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 code {
