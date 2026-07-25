@@ -69,3 +69,17 @@ export const formatDateForDisplay = (dateStr: string): string => {
     day: '2-digit',
   });
 };
+
+/**
+ * Sorts array of timeline items chronologically by date.
+ */
+export const sortTimelineItems = <T extends { date: string; id?: number }>(items: T[]): T[] => {
+  return [...items].sort((a, b) => {
+    const timeA = a.date ? new Date(formatToUTC(a.date)).getTime() : 0;
+    const timeB = b.date ? new Date(formatToUTC(b.date)).getTime() : 0;
+    if (timeA !== timeB) {
+      return timeB - timeA;
+    }
+    return (b.id || 0) - (a.id || 0);
+  });
+};

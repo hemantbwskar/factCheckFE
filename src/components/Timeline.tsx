@@ -3,6 +3,7 @@ import './Timeline.css';
 import { TimelineItem, TimelineProps } from '../interfaces';
 import TimelineCard from './TimeLineCard';
 import AddCardModal from './AddCardModal';
+import { sortTimelineItems } from '../utils/dateUtils';
 
 const API_URL = 'https://factcheckjsbe.onrender.com/api/timeline';
 
@@ -10,25 +11,49 @@ const Timeline: React.FC<TimelineProps> = ({ isAuthenticated = false }) => {
   const [timelineData, setTimelineData] = useState<TimelineItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAdding, setIsAdding] = useState(false);
+  const [highlightedId, setHighlightedId] = useState<number | null>(null);
 
-  // 1. Fetch items on load
+  const scrollToItem = (id: number) => {
+    setHighlightedId(id);
+    setTimeout(() => {
+      const el = document.getElementById(`timeline-item-${id}`);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 100);
+
+    setTimeout(() => {
+      setHighlightedId(null);
+    }, 2500);
+  };
+
+  // 1. Fetch items on load & sort chronologically
   useEffect(() => {
     fetch(API_URL)
       .then((res) => res.json())
       .then((data) => {
-        setTimelineData(data);
+        if (Array.isArray(data)) {
+          setTimelineData(sortTimelineItems(data));
+        }
         setLoading(false);
       })
-      .catch((err) => console.error('Error fetching timeline data:', err));
+      .catch((err) => {
+        console.error('Error fetching timeline data:', err);
+        setLoading(false);
+      });
   }, []);
 
-  // 2. Edit existing item handler
+  // 2. Edit existing item handler - re-sort and scroll into view
   const handleUpdateItem = async (updatedItem: TimelineItem) => {
     if (!isAuthenticated) return;
 
     setTimelineData((prev) =>
-      prev.map((item) => (item.id === updatedItem.id ? updatedItem : item))
+      sortTimelineItems(
+        prev.map((item) => (item.id === updatedItem.id ? updatedItem : item))
+      )
     );
+
+    scrollToItem(updatedItem.id);
 
     try {
       await fetch(`${API_URL}/${updatedItem.id}`, {
@@ -41,7 +66,7 @@ const Timeline: React.FC<TimelineProps> = ({ isAuthenticated = false }) => {
     }
   };
 
-  // 3. Add new item handler - post to API and immediately display in current page
+  // 3. Add new item handler - insert in sorted position & scroll into view
   const handleAddItem = async (newItemData: Omit<TimelineItem, 'id'>) => {
     if (!isAuthenticated) return;
 
@@ -59,16 +84,17 @@ const Timeline: React.FC<TimelineProps> = ({ isAuthenticated = false }) => {
         data.item ||
         (data.id ? (data as TimelineItem) : { id: Date.now(), ...newItemData });
 
-      // Add to current page state to display immediately
-      setTimelineData((prev) => [createdItem, ...prev]);
+      setTimelineData((prev) => sortTimelineItems([...prev, createdItem]));
       setIsAdding(false);
+      scrollToItem(createdItem.id);
     } catch (err) {
       console.error('Failed to save new card to backend:', err);
 
       // Fallback local update if backend fails
       const fallbackItem: TimelineItem = { id: Date.now(), ...newItemData };
-      setTimelineData((prev) => [fallbackItem, ...prev]);
+      setTimelineData((prev) => sortTimelineItems([...prev, fallbackItem]));
       setIsAdding(false);
+      scrollToItem(fallbackItem.id);
     }
   };
 
@@ -105,6 +131,7 @@ const Timeline: React.FC<TimelineProps> = ({ isAuthenticated = false }) => {
             isLast={index === timelineData.length - 1}
             onUpdate={handleUpdateItem}
             isAuthenticated={isAuthenticated}
+            isHighlighted={item.id === highlightedId}
           />
         ))}
       </div>

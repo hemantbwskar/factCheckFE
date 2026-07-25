@@ -320,6 +320,25 @@ input[type="date"].timeline-input-small::-webkit-calendar-picker-indicator:hover
   background-color: #f8fafc;
 }
 
+@keyframes cardHighlightPulse {
+  0% {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3), 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+  50% {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 5px rgba(59, 130, 246, 0.5), 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+  }
+  100% {
+    border-color: #e5e7eb;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.timeline-item-highlight .timeline-card {
+  animation: cardHighlightPulse 2s ease-in-out;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

@@ -8,9 +8,15 @@ const TimelineCard: React.FC<TimelineCardProps> = ({
   isLast,
   onUpdate,
   isAuthenticated = false,
+  isHighlighted = false,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<TimelineItem>(data);
+
+  // Sync state if props change
+  React.useEffect(() => {
+    setFormData(data);
+  }, [data]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -35,7 +41,10 @@ const TimelineCard: React.FC<TimelineCardProps> = ({
   };
 
   return (
-    <div className="timeline-item">
+    <div
+      className={`timeline-item ${isHighlighted ? 'timeline-item-highlight' : ''}`}
+      id={`timeline-item-${data.id}`}
+    >
       {/* Connector Line */}
       {!isLast && <span className="timeline-line" aria-hidden="true" />}
 

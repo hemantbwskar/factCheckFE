@@ -16,6 +16,7 @@ export interface TimelineCardProps {
   isLast: boolean;
   onUpdate: (updatedItem: TimelineItem) => void;
   isAuthenticated?: boolean;
+  isHighlighted?: boolean;
 }
 
 export interface AddCardProps {
