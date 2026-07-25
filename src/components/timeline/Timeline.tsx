@@ -3,7 +3,7 @@ import './Timeline.css';
 import { TimelineItem, TimelineProps } from '../../interfaces/interfaces';
 import TimelineCard from '../cards/TimeLineCard';
 import AddCardModal from '../cards/AddCardModal';
-import { sortTimelineItems } from '../../utils/dateUtils';
+import { getItemYear, sortTimelineItems } from '../../utils/dateUtils';
 import { API_URLS } from '../../config/api';
 
 const Timeline: React.FC<TimelineProps> = ({ isAuthenticated = false }) => {
@@ -11,6 +11,23 @@ const Timeline: React.FC<TimelineProps> = ({ isAuthenticated = false }) => {
   const [loading, setLoading] = useState(true);
   const [isAdding, setIsAdding] = useState(false);
   const [highlightedId, setHighlightedId] = useState<number | null>(null);
+  const [activeYear, setActiveYear] = useState<number | null>(null);
+
+  // Extract unique sorted list of years present in timeline
+  const availableYears = Array.from(
+    new Set(
+      timelineData
+        .map((item) => getItemYear(item.date))
+        .filter((yr): yr is number => yr !== null)
+    )
+  ).sort((a, b) => b - a);
+
+  // Set default active year if not set
+  useEffect(() => {
+    if (availableYears.length > 0 && activeYear === null) {
+      setActiveYear(availableYears[0]);
+    }
+  }, [availableYears, activeYear]);
 
   const scrollToItem = (id: number) => {
     setHighlightedId(id);
@@ -24,6 +41,14 @@ const Timeline: React.FC<TimelineProps> = ({ isAuthenticated = false }) => {
     setTimeout(() => {
       setHighlightedId(null);
     }, 2500);
+  };
+
+  const scrollToYear = (year: number) => {
+    setActiveYear(year);
+    const targetEl = document.getElementById(`year-section-${year}`);
+    if (targetEl) {
+      targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 
   // 1. Fetch items on load & sort chronologically
@@ -78,7 +103,6 @@ const Timeline: React.FC<TimelineProps> = ({ isAuthenticated = false }) => {
 
       const data = await res.json();
 
-      // Extract created item from backend response or construct fallback with generated ID
       const createdItem: TimelineItem =
         data.item ||
         (data.id ? (data as TimelineItem) : { id: Date.now(), ...newItemData });
@@ -89,7 +113,6 @@ const Timeline: React.FC<TimelineProps> = ({ isAuthenticated = false }) => {
     } catch (err) {
       console.error('Failed to save new card to backend:', err);
 
-      // Fallback local update if backend fails
       const fallbackItem: TimelineItem = { id: Date.now(), ...newItemData };
       setTimelineData((prev) => sortTimelineItems([...prev, fallbackItem]));
       setIsAdding(false);
@@ -100,39 +123,75 @@ const Timeline: React.FC<TimelineProps> = ({ isAuthenticated = false }) => {
   if (loading) return <div className="timeline-loading">Loading roadmap...</div>;
 
   return (
-    <div className="timeline-container">
-      <div className="timeline-header">
-        <h2 className="timeline-title">Project Roadmap</h2>
-        {isAuthenticated && !isAdding && (
-          <button
-            className="timeline-btn add-btn"
-            onClick={() => setIsAdding(true)}
-          >
-            + Add Event
-          </button>
-        )}
-      </div>
+    <div className="timeline-page-container">
+      {/* Left Sidebar for Year Grouping & Quick Scroll */}
+      {availableYears.length > 0 && (
+        <aside className="timeline-year-sidebar">
+          <h3 className="sidebar-heading">Years</h3>
+          <div className="year-nav-list">
+            {availableYears.map((year) => (
+              <button
+                key={year}
+                className={`year-nav-btn ${activeYear === year ? 'active' : ''}`}
+                onClick={() => scrollToYear(year)}
+              >
+                {year}
+              </button>
+            ))}
+          </div>
+        </aside>
+      )}
 
-      <div className="timeline-wrapper">
-        {/* Separated AddCard Component placed directly at top of list */}
-        {isAuthenticated && isAdding && (
-          <AddCardModal
-            onAdd={handleAddItem}
-            onCancel={() => setIsAdding(false)}
-          />
-        )}
+      {/* Main Timeline Column */}
+      <div className="timeline-main-content">
+        <div className="timeline-header">
+          <h2 className="timeline-title">Project Roadmap</h2>
+          {isAuthenticated && !isAdding && (
+            <button
+              className="timeline-btn add-btn"
+              onClick={() => setIsAdding(true)}
+            >
+              + Add Event
+            </button>
+          )}
+        </div>
 
-        {/* Existing Timeline Cards */}
-        {timelineData.map((item, index) => (
-          <TimelineCard
-            key={item.id}
-            data={item}
-            isLast={index === timelineData.length - 1}
-            onUpdate={handleUpdateItem}
-            isAuthenticated={isAuthenticated}
-            isHighlighted={item.id === highlightedId}
-          />
-        ))}
+        <div className="timeline-wrapper">
+          {/* AddCard Component placed at top of list */}
+          {isAuthenticated && isAdding && (
+            <AddCardModal
+              onAdd={handleAddItem}
+              onCancel={() => setIsAdding(false)}
+            />
+          )}
+
+          {/* Timeline Cards grouped with year dividers */}
+          {timelineData.map((item, index) => {
+            const currentYear = getItemYear(item.date);
+            const prevYear = index > 0 ? getItemYear(timelineData[index - 1].date) : null;
+            const showYearHeader = currentYear !== null && currentYear !== prevYear;
+
+            return (
+              <React.Fragment key={item.id}>
+                {showYearHeader && (
+                  <div
+                    className="timeline-year-header"
+                    id={`year-section-${currentYear}`}
+                  >
+                    <span className="year-title">{currentYear}</span>
+                  </div>
+                )}
+                <TimelineCard
+                  data={item}
+                  isLast={index === timelineData.length - 1}
+                  onUpdate={handleUpdateItem}
+                  isAuthenticated={isAuthenticated}
+                  isHighlighted={item.id === highlightedId}
+                />
+              </React.Fragment>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

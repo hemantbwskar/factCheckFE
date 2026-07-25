@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../timeline/Timeline.css';
 import { TimelineCardProps, TimelineItem } from '../../interfaces/interfaces';
 import { formatDateForDisplay, formatToInputDate, formatToUTC } from '../../utils/dateUtils';
+import { CATEGORY_OPTIONS, getIconForCategory } from '../../utils/categoryUtils';
 
 const TimelineCard: React.FC<TimelineCardProps> = ({
   data,
@@ -19,7 +20,7 @@ const TimelineCard: React.FC<TimelineCardProps> = ({
   }, [data]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -48,20 +49,11 @@ const TimelineCard: React.FC<TimelineCardProps> = ({
       {/* Connector Line */}
       {!isLast && <span className="timeline-line" aria-hidden="true" />}
 
-      {/* Circle Icon Badge */}
+      {/* Circle Icon Badge interpreted in FE */}
       <div className="timeline-icon-node">
-        {isEditing && isAuthenticated ? (
-          <input
-            type="text"
-            name="icon"
-            className="timeline-icon-input"
-            value={formData.icon}
-            onChange={handleChange}
-            maxLength={2}
-          />
-        ) : (
-          <span className="timeline-icon">{data.icon}</span>
-        )}
+        <span className="timeline-icon">
+          {getIconForCategory(isEditing ? formData.category : data.category)}
+        </span>
       </div>
 
       {/* Card Content */}
@@ -69,14 +61,25 @@ const TimelineCard: React.FC<TimelineCardProps> = ({
         {isEditing && isAuthenticated ? (
           <div className="timeline-card-edit-form">
             <div className="timeline-card-header">
-              <input
-                type="text"
+              <select
                 name="category"
-                className="timeline-input-small"
+                className="timeline-input-small timeline-select-small"
                 value={formData.category}
                 onChange={handleChange}
-                placeholder="Category"
-              />
+              >
+                <option value="" disabled>
+                  Select Category
+                </option>
+                {CATEGORY_OPTIONS.map((cat) => (
+                  <option key={cat.value} value={cat.value}>
+                    {cat.label}
+                  </option>
+                ))}
+                {formData.category &&
+                  !CATEGORY_OPTIONS.some(
+                    (c) => c.value.toLowerCase() === formData.category.toLowerCase()
+                  ) && <option value={formData.category}>{formData.category}</option>}
+              </select>
               <input
                 type="date"
                 name="date"

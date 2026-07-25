@@ -2,20 +2,20 @@ import React, { useState } from 'react';
 import '../timeline/Timeline.css';
 import { AddCardProps } from '../../interfaces/interfaces';
 import { formatToInputDate, formatToUTC, getTodayInputDate } from '../../utils/dateUtils';
+import { CATEGORY_OPTIONS, getIconForCategory } from '../../utils/categoryUtils';
 
 const getInitialState = () => ({
   title: '',
   date: getTodayInputDate(),
-  category: '',
+  category: 'Planning',
   description: '',
-  icon: '🚀',
 });
 
 const AddCardModal: React.FC<AddCardProps> = ({ onAdd, onCancel }) => {
   const [formData, setFormData] = useState(getInitialState);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -37,33 +37,31 @@ const AddCardModal: React.FC<AddCardProps> = ({ onAdd, onCancel }) => {
       {/* Connector Line linking to the next card */}
       <span className="timeline-line" aria-hidden="true" />
 
-      {/* Circle Icon Node */}
+      {/* Circle Icon Node interpreted in FE */}
       <div className="timeline-icon-node">
-        <input
-          type="text"
-          name="icon"
-          className="timeline-icon-input"
-          value={formData.icon}
-          onChange={handleChange}
-          maxLength={2}
-          placeholder="🚀"
-          required
-        />
+        <span className="timeline-icon">{getIconForCategory(formData.category)}</span>
       </div>
 
       {/* Card Content Styled Form */}
       <div className="timeline-card">
         <form className="timeline-card-edit-form" onSubmit={handleSubmit}>
           <div className="timeline-card-header">
-            <input
-              type="text"
+            <select
               name="category"
-              className="timeline-input-small"
+              className="timeline-input-small timeline-select-small"
               value={formData.category}
               onChange={handleChange}
-              placeholder="Category (e.g. Planning)"
               required
-            />
+            >
+              <option value="" disabled>
+                Select Category
+              </option>
+              {CATEGORY_OPTIONS.map((cat) => (
+                <option key={cat.value} value={cat.value}>
+                  {cat.label}
+                </option>
+              ))}
+            </select>
             <input
               type="date"
               name="date"

@@ -71,15 +71,43 @@ export const formatDateForDisplay = (dateStr: string): string => {
 };
 
 /**
- * Sorts array of timeline items chronologically by date.
+ * Robustly parses a date string into a numeric millisecond timestamp (guaranteed not NaN).
+ */
+export const parseTimestamp = (dateStr?: string): number => {
+  if (!dateStr) return 0;
+  let d = new Date(dateStr);
+  if (!isNaN(d.getTime())) {
+    return d.getTime();
+  }
+  d = new Date(`${dateStr} UTC`);
+  if (!isNaN(d.getTime())) {
+    return d.getTime();
+  }
+  return 0;
+};
+
+/**
+ * Extracts four-digit year number from a date string.
+ */
+export const getItemYear = (dateStr: string): number | null => {
+  if (!dateStr) return null;
+  const ts = parseTimestamp(dateStr);
+  if (ts === 0) return null;
+  const d = new Date(ts);
+  return d.getUTCFullYear();
+};
+
+/**
+ * Sorts array of timeline items in reverse chronological order (latest dates at top).
  */
 export const sortTimelineItems = <T extends { date: string; id?: number }>(items: T[]): T[] => {
+  if (!Array.isArray(items)) return [];
   return [...items].sort((a, b) => {
-    const timeA = a.date ? new Date(formatToUTC(a.date)).getTime() : 0;
-    const timeB = b.date ? new Date(formatToUTC(b.date)).getTime() : 0;
+    const timeA = parseTimestamp(a?.date);
+    const timeB = parseTimestamp(b?.date);
     if (timeA !== timeB) {
-      return timeB - timeA;
+      return timeB - timeA; // Descending: latest date (largest timestamp) first at top
     }
-    return (b.id || 0) - (a.id || 0);
+    return (b?.id || 0) - (a?.id || 0);
   });
 };

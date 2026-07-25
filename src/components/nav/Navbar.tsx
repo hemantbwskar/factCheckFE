@@ -11,7 +11,7 @@ const Navbar: React.FC<NavbarProps> = ({ user, onLogout }) => {
       <div className="navbar-content">
         <Link to="/" className="navbar-brand">
           <div className="navbar-logo-badge">✓</div>
-          <span>FactCheck</span>
+          <span>FactsCheck</span>
         </Link>
 
         <nav className="navbar-links">
@@ -19,7 +19,7 @@ const Navbar: React.FC<NavbarProps> = ({ user, onLogout }) => {
             to="/"
             className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}
           >
-            Roadmap
+            Timeline
           </Link>
 
           {user ? (

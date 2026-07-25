@@ -4,7 +4,6 @@ export interface TimelineItem {
   date: string;
   category: string;
   description: string;
-  icon: string;
 }
 
 export interface TimelineProps {
