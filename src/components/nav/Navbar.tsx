@@ -11,7 +11,7 @@ const Navbar: React.FC<NavbarProps> = ({ user, onLogout }) => {
       <div className="navbar-content">
         <Link to="/" className="navbar-brand">
           <div className="navbar-logo-badge">✓</div>
-          <span>FactsCheck</span>
+          <span>FactCheck</span>
         </Link>
 
         <nav className="navbar-links">

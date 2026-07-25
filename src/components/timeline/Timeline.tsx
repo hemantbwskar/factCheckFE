@@ -152,7 +152,7 @@ const Timeline: React.FC<TimelineProps> = ({ isAuthenticated = false }) => {
       {/* Main Timeline Column */}
       <div className="timeline-main-content">
         <div className="timeline-header">
-          <h2 className="timeline-title">Project Roadmap</h2>
+          <h2 className="timeline-title">Timeline</h2>
           {isAuthenticated && !isAdding && (
             <button
               className="timeline-btn add-btn"
