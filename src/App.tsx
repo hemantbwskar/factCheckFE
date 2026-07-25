@@ -1,13 +1,57 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
+import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import Timeline from './components/Timeline';
+import SignIn from './components/SignIn';
+import Navbar from './components/Navbar';
+import { User } from './interfaces';
 
 function App() {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    // Check if user info is stored in localStorage or sessionStorage
+    const savedUser =
+      localStorage.getItem('factcheck_user') ||
+      sessionStorage.getItem('factcheck_user');
+    if (savedUser) {
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch (e) {
+        console.error('Failed to parse saved user credentials', e);
+      }
+    }
+  }, []);
+
+  const handleLoginSuccess = (userData: User) => {
+    setUser(userData);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('factcheck_user');
+    sessionStorage.removeItem('factcheck_user');
+    setUser(null);
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 py-10">
-      <Timeline />
-    </div>
+    <Router>
+      <div className="min-h-screen bg-gray-50 flex flex-col">
+        <Navbar user={user} onLogout={handleLogout} />
+        <main className="flex-1 py-8">
+          <Routes>
+            <Route
+              path="/"
+              element={<Timeline isAuthenticated={!!user} />}
+            />
+            <Route
+              path="/signin"
+              element={<SignIn onLoginSuccess={handleLoginSuccess} />}
+            />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </main>
+      </div>
+    </Router>
   );
 }
 

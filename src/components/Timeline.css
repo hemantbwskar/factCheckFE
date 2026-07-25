@@ -5,11 +5,35 @@
   padding: 2rem 1rem;
 }
 
+/* Header Area with Add Button */
+.timeline-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
 .timeline-title {
   font-size: 1.5rem;
   font-weight: 700;
   color: #111827;
-  margin-bottom: 2rem;
+  margin: 0;
+}
+
+.add-btn {
+  background-color: #10b981;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.add-btn:hover {
+  background-color: #059669;
+  transform: translateY(-1px);
 }
 
 .timeline-wrapper {
@@ -39,7 +63,7 @@
   background-color: #e5e7eb;
 }
 
-/* Icon Badge */
+/* Icon Badge Node */
 .timeline-icon-node {
   position: relative;
   z-index: 10;
@@ -58,6 +82,19 @@
 
 .timeline-icon {
   font-size: 1.25rem;
+}
+
+/* Editable Node Emoji Input */
+.timeline-icon-input {
+  width: 2.25rem;
+  height: 2.25rem;
+  text-align: center;
+  border-radius: 50%;
+  border: 1px solid #93c5fd;
+  background: #ffffff;
+  font-size: 1rem;
+  padding: 0;
+  outline: none;
 }
 
 /* Timeline Card Structure */
@@ -84,6 +121,7 @@
   border-bottom: 1px solid #f3f4f6;
   background-color: rgba(249, 250, 251, 0.5);
   padding: 1rem 1.5rem;
+  gap: 12px;
 }
 
 .timeline-badge {
@@ -101,6 +139,13 @@
   font-size: 0.75rem;
   font-weight: 600;
   color: #6b7280;
+}
+
+/* Container for Date + Pen Icon */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 /* Card Content */
@@ -122,37 +167,69 @@
   color: #4b5563;
 }
 
-/* Container for Date + Pen Icon */
-.header-right {
+/* Edit Form Styling */
+.timeline-card-edit-form {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column;
+  padding: 1rem;
 }
 
-/* Base style for Icon Buttons */
+.timeline-input-small,
+.timeline-input-title,
+.timeline-textarea-description {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.timeline-input-small:focus,
+.timeline-input-title:focus,
+.timeline-textarea-description:focus {
+  border-color: #2563eb;
+}
+
+.timeline-input-title {
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+.timeline-textarea-description {
+  resize: vertical;
+  font-family: inherit;
+  line-height: 1.5;
+}
+/* Actions area inside card body */
+.timeline-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+/* Icon Buttons Base Style */
 .icon-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border: none;
-  background: transparent;
-  padding: 6px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
-/* Edit Pen Icon Button */
-.edit-btn {
-  color: #64748b;
+.icon-btn:hover {
+  transform: scale(1.05);
 }
 
-.edit-btn:hover {
-  background-color: #f1f5f9;
-  color: #2563eb;
-}
-
-/* Save / Cancel Icon Buttons in Edit Mode */
 .save-btn {
   background-color: #2563eb;
   color: #ffffff;
@@ -163,65 +240,53 @@
 }
 
 .cancel-btn {
-  background-color: #e2e8f0;
-  color: #475569;
+  background-color: #ef4444;
+  color: #ffffff;
 }
 
 .cancel-btn:hover {
-  background-color: #cbd5e1;
-  color: #0f172a;
+  background-color: #dc2626;
 }
 
-/* Edit form styling */
-.timeline-card-edit-form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.timeline-input-small,
-.timeline-input-title,
-.timeline-textarea-description,
-.timeline-icon-input {
-  width: 100%;
-  padding: 6px 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  box-sizing: border-box;
-}
-
-.timeline-icon-input {
-  width: 36px;
-  text-align: center;
-  padding: 2px;
-}
-
-.timeline-input-title {
-  font-weight: bold;
-  margin-bottom: 8px;
-}
-
-.timeline-textarea-description {
-  resize: vertical;
-  font-family: inherit;
-}
-
-.timeline-card-actions {
-  display: flex;
-  gap: 8px;
-  justify-content: flex-end;
-  margin-top: 8px;
-}
-
-.timeline-btn {
-  padding: 4px 12px;
+/* Base style for Header Icon Buttons */
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: none;
-  border-radius: 4px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
   cursor: pointer;
-  font-size: 0.85rem;
+  transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
-.edit-btn { background-color: #e2e8f0; color: #1e293b; }
-.save-btn { background-color: #2563eb; color: #ffffff; }
-.cancel-btn { background-color: #94a3b8; color: #ffffff; }
+.edit-btn {
+  color: #64748b;
+}
+
+.edit-btn:hover {
+  background-color: #f1f5f9;
+  color: #2563eb;
+}
+
+/* Add Item Animation and Highlight */
+.timeline-add-item {
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+.timeline-add-item .timeline-card {
+  border: 2px dashed #3b82f6;
+  background-color: #f8fafc;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

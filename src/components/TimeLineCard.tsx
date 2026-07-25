@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import './Timeline.css';
-import { TimelineItem, TimelineCardProps } from '../interfaces';
+import { TimelineCardProps, TimelineItem } from '../interfaces';
 
-const TimelineCard: React.FC<TimelineCardProps> = ({ data, isLast, onUpdate }) => {
+const TimelineCard: React.FC<TimelineCardProps> = ({
+  data,
+  isLast,
+  onUpdate,
+  isAuthenticated = false,
+}) => {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<TimelineItem>(data);
 
@@ -14,6 +19,7 @@ const TimelineCard: React.FC<TimelineCardProps> = ({ data, isLast, onUpdate }) =
   };
 
   const handleSave = () => {
+    if (!isAuthenticated) return;
     onUpdate(formData);
     setIsEditing(false);
   };
@@ -30,7 +36,7 @@ const TimelineCard: React.FC<TimelineCardProps> = ({ data, isLast, onUpdate }) =
 
       {/* Circle Icon Badge */}
       <div className="timeline-icon-node">
-        {isEditing ? (
+        {isEditing && isAuthenticated ? (
           <input
             type="text"
             name="icon"
@@ -46,7 +52,7 @@ const TimelineCard: React.FC<TimelineCardProps> = ({ data, isLast, onUpdate }) =
 
       {/* Card Content */}
       <div className="timeline-card">
-        {isEditing ? (
+        {isEditing && isAuthenticated ? (
           <div className="timeline-card-edit-form">
             <div className="timeline-card-header">
               <input
@@ -84,31 +90,49 @@ const TimelineCard: React.FC<TimelineCardProps> = ({ data, isLast, onUpdate }) =
                 rows={3}
                 placeholder="Description"
               />
-            </div>
 
-            <div className="timeline-card-actions">
-              {/* Save Button */}
-              <button
-                className="icon-btn save-btn"
-                onClick={handleSave}
-                title="Save changes"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-              </button>
+              <div className="timeline-card-actions">
+                <button
+                  type="button"
+                  className="icon-btn save-btn"
+                  onClick={handleSave}
+                  title="Save changes"
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </button>
 
-              {/* Cancel Button */}
-              <button
-                className="icon-btn cancel-btn"
-                onClick={handleCancel}
-                title="Cancel editing"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="18" y1="6" x2="6" y2="18" />
-                  <line x1="6" y1="6" x2="18" y2="18" />
-                </svg>
-              </button>
+                <button
+                  type="button"
+                  className="icon-btn cancel-btn"
+                  onClick={handleCancel}
+                  title="Cancel editing"
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         ) : (
@@ -117,19 +141,29 @@ const TimelineCard: React.FC<TimelineCardProps> = ({ data, isLast, onUpdate }) =
               <span className="timeline-badge">{data.category}</span>
               <div className="header-right">
                 <time className="timeline-date">{data.date}</time>
-                
-                {/* Pen Edit Icon */}
-                <button
-                  className="icon-btn edit-btn"
-                  onClick={() => setIsEditing(true)}
-                  title="Edit timeline card"
-                  aria-label="Edit timeline item"
-                >
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                  </svg>
-                </button>
+                {isAuthenticated && (
+                  <button
+                    type="button"
+                    className="icon-btn edit-btn"
+                    onClick={() => setIsEditing(true)}
+                    title="Edit timeline card"
+                    aria-label="Edit timeline item"
+                  >
+                    <svg
+                      width="15"
+                      height="15"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                    </svg>
+                  </button>
+                )}
               </div>
             </div>
 
