@@ -120,7 +120,14 @@ const Timeline: React.FC<TimelineProps> = ({ isAuthenticated = false }) => {
     }
   };
 
-  if (loading) return <div className="timeline-loading">Loading roadmap...</div>;
+  if (loading) {
+    return (
+      <div className="timeline-loading-container">
+        <div className="timeline-spinner" aria-label="Loading roadmap" />
+        <span className="timeline-loading-text">Loading Timeline...</span>
+      </div>
+    );
+  }
 
   return (
     <div className="timeline-page-container">

@@ -512,3 +512,51 @@ input[type="date"].timeline-input-small::-webkit-calendar-picker-indicator:hover
     transform: translateY(0);
   }
 }
+
+/* Centered Animated Spinner Loader */
+.timeline-loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.timeline-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #e2e8f0;
+  border-top-color: #2563eb;
+  border-right-color: #3b82f6;
+  border-radius: 50%;
+  animation: timelineSpin 0.8s linear infinite;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+}
+
+@keyframes timelineSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.timeline-loading-text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #64748b;
+  letter-spacing: 0.03em;
+  animation: pulseText 1.5s ease-in-out infinite;
+}
+
+@keyframes pulseText {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
