@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import './Timeline.css';
-import { AddCardProps } from '../interfaces';
-import { formatToInputDate, formatToUTC, getTodayInputDate } from '../utils/dateUtils';
+import './../components/Timeline/Timeline.css';
+import { AddCardProps } from '../../interfaces/interfaces';
+import { formatToInputDate, formatToUTC, getTodayInputDate } from '../../utils/dateUtils';
 
 const getInitialState = () => ({
   title: '',

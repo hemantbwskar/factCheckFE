@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import './Timeline.css';
-import { TimelineCardProps, TimelineItem } from '../interfaces';
-import { formatDateForDisplay, formatToInputDate, formatToUTC } from '../utils/dateUtils';
+import './../components/Timeline/Timeline.css';
+import { TimelineCardProps, TimelineItem } from '../../interfaces/interfaces';
+import { formatDateForDisplay, formatToInputDate, formatToUTC } from '../../utils/dateUtils';
 
 const TimelineCard: React.FC<TimelineCardProps> = ({
   data,

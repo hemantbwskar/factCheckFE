@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SignIn.css';
-import { User } from '../interfaces';
+import { User } from '../../interfaces/interfaces';
 
 interface SignInProps {
   onLoginSuccess?: (user: User) => void;

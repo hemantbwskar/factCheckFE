@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './Timeline.css';
-import { TimelineItem, TimelineProps } from '../interfaces';
-import TimelineCard from './TimeLineCard';
-import AddCardModal from './AddCardModal';
-import { sortTimelineItems } from '../utils/dateUtils';
+import { TimelineItem, TimelineProps } from '../../interfaces/interfaces';
+import TimelineCard from '../cards/TimeLineCard';
+import AddCardModal from '../cards/AddCardModal';
+import { sortTimelineItems } from '../../utils/dateUtils';
 
 const API_URL = 'https://factcheckjsbe.onrender.com/api/timeline';
 

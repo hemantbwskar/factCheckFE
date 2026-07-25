@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
-import Timeline from './components/Timeline';
-import SignIn from './components/SignIn';
-import Navbar from './components/Navbar';
-import { User } from './interfaces';
+import Timeline from './components/timeline/Timeline';
+import SignIn from './components/signin/SignIn';
+import Navbar from './components/nav/Navbar';
+import { User } from './interfaces/interfaces';
 
 function App() {
   const [user, setUser] = useState<User | null>(null);

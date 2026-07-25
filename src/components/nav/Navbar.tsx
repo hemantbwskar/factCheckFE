@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './Navbar.css';
-import { NavbarProps } from '../interfaces';
+import { NavbarProps } from '../../interfaces/interfaces';
 
 const Navbar: React.FC<NavbarProps> = ({ user, onLogout }) => {
   const location = useLocation();
