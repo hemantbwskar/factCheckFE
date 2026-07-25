@@ -4,8 +4,7 @@ import { TimelineItem, TimelineProps } from '../../interfaces/interfaces';
 import TimelineCard from '../cards/TimeLineCard';
 import AddCardModal from '../cards/AddCardModal';
 import { sortTimelineItems } from '../../utils/dateUtils';
-
-const API_URL = 'https://factcheckjsbe.onrender.com/api/timeline';
+import { API_URLS } from '../../config/api';
 
 const Timeline: React.FC<TimelineProps> = ({ isAuthenticated = false }) => {
   const [timelineData, setTimelineData] = useState<TimelineItem[]>([]);
@@ -29,7 +28,7 @@ const Timeline: React.FC<TimelineProps> = ({ isAuthenticated = false }) => {
 
   // 1. Fetch items on load & sort chronologically
   useEffect(() => {
-    fetch(API_URL)
+    fetch(API_URLS.TIMELINE)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
@@ -56,7 +55,7 @@ const Timeline: React.FC<TimelineProps> = ({ isAuthenticated = false }) => {
     scrollToItem(updatedItem.id);
 
     try {
-      await fetch(`${API_URL}/${updatedItem.id}`, {
+      await fetch(API_URLS.TIMELINE_ITEM(updatedItem.id), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedItem),
@@ -71,7 +70,7 @@ const Timeline: React.FC<TimelineProps> = ({ isAuthenticated = false }) => {
     if (!isAuthenticated) return;
 
     try {
-      const res = await fetch(API_URL, {
+      const res = await fetch(API_URLS.TIMELINE, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newItemData),

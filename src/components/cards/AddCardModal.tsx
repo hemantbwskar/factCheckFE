@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './../components/Timeline/Timeline.css';
+import '../timeline/Timeline.css';
 import { AddCardProps } from '../../interfaces/interfaces';
 import { formatToInputDate, formatToUTC, getTodayInputDate } from '../../utils/dateUtils';
 

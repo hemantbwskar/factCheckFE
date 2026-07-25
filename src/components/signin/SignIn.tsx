@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SignIn.css';
 import { User } from '../../interfaces/interfaces';
+import { API_URLS } from '../../config/api';
 
 interface SignInProps {
   onLoginSuccess?: (user: User) => void;
 }
-
-const API_URL = process.env.REACT_APP_API_SIGNIN_URL || 'https://factcheckjsbe.onrender.com/api/signin';
 
 const SignIn: React.FC<SignInProps> = ({ onLoginSuccess }) => {
   const [username, serUsername] = useState('');
@@ -34,7 +33,7 @@ const SignIn: React.FC<SignInProps> = ({ onLoginSuccess }) => {
 
     try {
       // 1. Call the API with suffix /api/signin
-      const response = await fetch(API_URL, {
+      const response = await fetch(API_URLS.SIGNIN, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -81,7 +80,7 @@ const SignIn: React.FC<SignInProps> = ({ onLoginSuccess }) => {
           data.message ||
           data.error ||
           (response.status === 404
-            ? `Server endpoint ${API_URL} returned status 404 (Not Found).`
+            ? `Server endpoint ${API_URLS.SIGNIN} returned status 404 (Not Found).`
             : `Authentication failed with status code ${response.status}.`);
 
         setError(failureReason);

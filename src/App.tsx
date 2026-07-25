@@ -5,6 +5,7 @@ import Timeline from './components/timeline/Timeline';
 import SignIn from './components/signin/SignIn';
 import Navbar from './components/nav/Navbar';
 import { User } from './interfaces/interfaces';
+import { APP_ROUTES } from './config/api';
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -40,14 +41,14 @@ function App() {
         <main className="flex-1 py-8">
           <Routes>
             <Route
-              path="/"
+              path={APP_ROUTES.HOME}
               element={<Timeline isAuthenticated={!!user} />}
             />
             <Route
-              path="/signin"
+              path={APP_ROUTES.SIGNIN}
               element={<SignIn onLoginSuccess={handleLoginSuccess} />}
             />
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="*" element={<Navigate to={APP_ROUTES.HOME} replace />} />
           </Routes>
         </main>
       </div>
