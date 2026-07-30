@@ -57,7 +57,7 @@ function App() {
           <Routes>
             <Route
               path={APP_ROUTES.HOME}
-              element={<Timeline isAuthenticated={!!user} />}
+              element={<Timeline isAuthenticated={!!user} currentUser={user} />}
             />
             <Route
               path={APP_ROUTES.SIGNIN}

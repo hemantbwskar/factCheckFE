@@ -4,10 +4,13 @@ export interface TimelineItem {
   date: string;
   category: string;
   description: string;
+  visibility?: 'public' | 'private';
+  username?: string;
 }
 
 export interface TimelineProps {
   isAuthenticated?: boolean;
+  currentUser?: User | null;
 }
 
 export interface TimelineCardProps {
@@ -16,11 +19,13 @@ export interface TimelineCardProps {
   onUpdate: (updatedItem: TimelineItem) => void;
   isAuthenticated?: boolean;
   isHighlighted?: boolean;
+  currentUser?: User | null;
 }
 
 export interface AddCardProps {
   onAdd: (newItem: Omit<TimelineItem, 'id'>) => void;
   onCancel: () => void;
+  currentUser?: User | null;
 }
 
 export interface NavbarProps {

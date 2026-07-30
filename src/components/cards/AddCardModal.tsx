@@ -9,9 +9,10 @@ const getInitialState = () => ({
   date: getTodayInputDate(),
   category: 'Planning',
   description: '',
+  visibility: 'public' as 'public' | 'private',
 });
 
-const AddCardModal: React.FC<AddCardProps> = ({ onAdd, onCancel }) => {
+const AddCardModal: React.FC<AddCardProps> = ({ onAdd, onCancel, currentUser }) => {
   const [formData, setFormData] = useState(getInitialState);
 
   const handleChange = (
@@ -24,9 +25,12 @@ const AddCardModal: React.FC<AddCardProps> = ({ onAdd, onCancel }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.title.trim()) return;
+    const userTag = currentUser?.username || currentUser?.name || '';
     const finalData = {
       ...formData,
       date: formatToUTC(formData.date),
+      visibility: formData.visibility || 'public',
+      username: userTag,
     };
     onAdd(finalData);
     setFormData(getInitialState());
@@ -62,6 +66,7 @@ const AddCardModal: React.FC<AddCardProps> = ({ onAdd, onCancel }) => {
                 </option>
               ))}
             </select>
+
             <input
               type="date"
               name="date"
@@ -91,9 +96,20 @@ const AddCardModal: React.FC<AddCardProps> = ({ onAdd, onCancel }) => {
               rows={3}
               required
             />
-          </div>
 
-          <div className="timeline-card-actions">
+            <div className="timeline-card-actions">
+              <select
+                name="visibility"
+                className="timeline-input-small timeline-select-small visibility-select"
+                value={formData.visibility}
+                onChange={handleChange}
+                title="Visibility"
+              >
+                <option value="public">🌐 Public</option>
+                <option value="private">🔒 Private</option>
+              </select>
+
+              <div className="action-buttons-right">
                 <button
                   type="submit"
                   className="icon-btn save-btn"
@@ -134,6 +150,8 @@ const AddCardModal: React.FC<AddCardProps> = ({ onAdd, onCancel }) => {
                   </svg>
                 </button>
               </div>
+            </div>
+          </div>
         </form>
       </div>
     </div>

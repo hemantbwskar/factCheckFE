@@ -6,17 +6,35 @@ import AddCardModal from '../cards/AddCardModal';
 import { getItemYear, sortTimelineItems } from '../../utils/dateUtils';
 import { API_URLS } from '../../config/api';
 
-const Timeline: React.FC<TimelineProps> = ({ isAuthenticated = false }) => {
+const Timeline: React.FC<TimelineProps> = ({
+  isAuthenticated = false,
+  currentUser,
+}) => {
   const [timelineData, setTimelineData] = useState<TimelineItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAdding, setIsAdding] = useState(false);
   const [highlightedId, setHighlightedId] = useState<number | null>(null);
   const [activeYear, setActiveYear] = useState<number | null>(null);
 
-  // Extract unique sorted list of years present in timeline
+  // Filter items based on public/private visibility rules:
+  // - All public posts (or posts without explicit visibility tag) are visible to everyone
+  // - Private posts are visible ONLY to the logged in user who created them
+  const currentUsername = (currentUser?.username || currentUser?.name || '').toLowerCase();
+
+  const visibleItems = timelineData.filter((item) => {
+    const isPrivate = item.visibility === 'private';
+    if (!isPrivate) return true; // All public posts visible
+
+    // Private post: must be logged in & match post user tag
+    if (!isAuthenticated || !currentUsername) return false;
+    const postUser = (item.username || '').toLowerCase();
+    return !postUser || postUser === currentUsername;
+  });
+
+  // Extract unique sorted list of years present in visible timeline
   const availableYears = Array.from(
     new Set(
-      timelineData
+      visibleItems
         .map((item) => getItemYear(item.date))
         .filter((yr): yr is number => yr !== null)
     )
@@ -169,13 +187,14 @@ const Timeline: React.FC<TimelineProps> = ({ isAuthenticated = false }) => {
             <AddCardModal
               onAdd={handleAddItem}
               onCancel={() => setIsAdding(false)}
+              currentUser={currentUser}
             />
           )}
 
           {/* Timeline Cards grouped with year dividers */}
-          {timelineData.map((item, index) => {
+          {visibleItems.map((item, index) => {
             const currentYear = getItemYear(item.date);
-            const prevYear = index > 0 ? getItemYear(timelineData[index - 1].date) : null;
+            const prevYear = index > 0 ? getItemYear(visibleItems[index - 1].date) : null;
             const showYearHeader = currentYear !== null && currentYear !== prevYear;
 
             return (
@@ -190,10 +209,11 @@ const Timeline: React.FC<TimelineProps> = ({ isAuthenticated = false }) => {
                 )}
                 <TimelineCard
                   data={item}
-                  isLast={index === timelineData.length - 1}
+                  isLast={index === visibleItems.length - 1}
                   onUpdate={handleUpdateItem}
                   isAuthenticated={isAuthenticated}
                   isHighlighted={item.id === highlightedId}
+                  currentUser={currentUser}
                 />
               </React.Fragment>
             );

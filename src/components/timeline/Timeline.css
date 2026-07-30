@@ -259,6 +259,20 @@
   gap: 12px;
 }
 
+.header-badges {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.header-left-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 .timeline-badge {
   border-radius: 0.375rem;
   background-color: var(--badge-bg);
@@ -268,6 +282,40 @@
   color: var(--badge-text);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+/* Visibility Badge Styling */
+.visibility-badge {
+  border-radius: 0.375rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.725rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.badge-public {
+  background-color: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.badge-private {
+  background-color: rgba(245, 158, 11, 0.12);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+/* User Tag Badge */
+.user-tag-badge {
+  border-radius: 0.375rem;
+  background-color: rgba(148, 163, 184, 0.12);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  padding: 0.25rem 0.5rem;
+  font-size: 0.725rem;
+  font-weight: 600;
 }
 
 .timeline-date {
@@ -342,8 +390,13 @@
   line-height: 1.5;
 }
 
-/* Custom Select Dropdown Styling */
-select.timeline-select-small {
+/* Shared Height and Styling for Small Inputs/Selects */
+.timeline-input-small,
+select.timeline-select-small,
+input[type="date"].timeline-input-small {
+  height: 36px;
+  line-height: 36px;
+  box-sizing: border-box;
   font-family: inherit;
   font-size: 0.85rem;
   font-weight: 600;
@@ -351,58 +404,49 @@ select.timeline-select-small {
   background-color: var(--bg-input);
   border: 1px solid var(--border-input);
   border-radius: 8px;
-  padding: 7px 30px 7px 10px;
-  cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%232563EB%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 10px auto;
-  transition: all 0.2s ease-in-out;
-}
-
-select.timeline-select-small:hover {
-  background-color: var(--bg-card);
-  border-color: #94a3b8;
-}
-
-select.timeline-select-small:focus {
-  background-color: var(--bg-card);
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-}
-
-/* Custom Date Input Styling */
-input[type="date"].timeline-input-small {
-  font-family: inherit;
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--text-primary);
-  background-color: var(--bg-input);
-  border: 1px solid var(--border-input);
-  border-radius: 8px;
-  padding: 7px 10px;
-  cursor: pointer;
+  padding: 0 10px;
+  margin: 0;
+  vertical-align: middle;
+  outline: none;
   transition: all 0.2s ease-in-out;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
+/* Custom Select Dropdown Styling */
+select.timeline-select-small {
+  padding-right: 28px;
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%232563EB%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 10px auto;
+}
+
+select.timeline-select-small:hover,
 input[type="date"].timeline-input-small:hover {
   background-color: var(--bg-card);
   border-color: #94a3b8;
 }
 
+select.timeline-select-small:focus,
 input[type="date"].timeline-input-small:focus {
   background-color: var(--bg-card);
   border-color: #2563eb;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
+/* Visibility Select specific width */
+select.visibility-select {
+  width: 125px;
+  flex-shrink: 0;
+}
+
 /* Custom Calendar Picker Icon Styling */
 input[type="date"].timeline-input-small::-webkit-calendar-picker-indicator {
   cursor: pointer;
   border-radius: 4px;
-  padding: 4px;
+  padding: 2px;
   filter: invert(30%) sepia(85%) saturate(1200%) hue-rotate(200deg);
   transition: transform 0.15s ease, background-color 0.15s ease;
 }
@@ -416,9 +460,16 @@ input[type="date"].timeline-input-small::-webkit-calendar-picker-indicator:hover
 .timeline-card-actions {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 1rem;
+  padding-top: 0.5rem;
+}
+
+.action-buttons-right {
+  display: flex;
+  align-items: center;
   gap: 8px;
-  margin-top: 12px;
 }
 
 /* Icon Buttons Base Style */

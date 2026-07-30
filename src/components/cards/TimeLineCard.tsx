@@ -10,6 +10,7 @@ const TimelineCard: React.FC<TimelineCardProps> = ({
   onUpdate,
   isAuthenticated = false,
   isHighlighted = false,
+  currentUser,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<TimelineItem>(data);
@@ -31,6 +32,7 @@ const TimelineCard: React.FC<TimelineCardProps> = ({
     const updatedData = {
       ...formData,
       date: formatToUTC(formData.date),
+      visibility: formData.visibility || 'public',
     };
     onUpdate(updatedData);
     setIsEditing(false);
@@ -40,6 +42,9 @@ const TimelineCard: React.FC<TimelineCardProps> = ({
     setFormData(data);
     setIsEditing(false);
   };
+
+  const isPrivate = data.visibility === 'private';
+  const usernameTag = data.username || '';
 
   return (
     <div
@@ -80,6 +85,7 @@ const TimelineCard: React.FC<TimelineCardProps> = ({
                     (c) => c.value.toLowerCase() === formData.category.toLowerCase()
                   ) && <option value={formData.category}>{formData.category}</option>}
               </select>
+
               <input
                 type="date"
                 name="date"
@@ -108,53 +114,77 @@ const TimelineCard: React.FC<TimelineCardProps> = ({
               />
 
               <div className="timeline-card-actions">
-                <button
-                  type="button"
-                  className="icon-btn save-btn"
-                  onClick={handleSave}
-                  title="Save changes"
+                <select
+                  name="visibility"
+                  className="timeline-input-small timeline-select-small visibility-select"
+                  value={formData.visibility || 'public'}
+                  onChange={handleChange}
+                  title="Visibility"
                 >
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
-                </button>
+                  <option value="public">🌐 Public</option>
+                  <option value="private">🔒 Private</option>
+                </select>
 
-                <button
-                  type="button"
-                  className="icon-btn cancel-btn"
-                  onClick={handleCancel}
-                  title="Cancel editing"
-                >
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                <div className="action-buttons-right">
+                  <button
+                    type="button"
+                    className="icon-btn save-btn"
+                    onClick={handleSave}
+                    title="Save changes"
                   >
-                    <line x1="18" y1="6" x2="6" y2="18" />
-                    <line x1="6" y1="6" x2="18" y2="18" />
-                  </svg>
-                </button>
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  </button>
+
+                  <button
+                    type="button"
+                    className="icon-btn cancel-btn"
+                    onClick={handleCancel}
+                    title="Cancel editing"
+                  >
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <line x1="18" y1="6" x2="6" y2="18" />
+                      <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         ) : (
           <>
             <div className="timeline-card-header">
-              <span className="timeline-badge">{data.category}</span>
+              <div className="header-badges">
+                <span className="timeline-badge">{data.category}</span>
+                <span className={`visibility-badge ${isPrivate ? 'badge-private' : 'badge-public'}`}>
+                  {isPrivate ? '🔒 Private' : '🌐 Public'}
+                </span>
+                {usernameTag && (
+                  <span className="user-tag-badge" title={`Posted by ${usernameTag}`}>
+                    @{usernameTag}
+                  </span>
+                )}
+              </div>
+
               <div className="header-right">
                 <time className="timeline-date">{formatDateForDisplay(data.date)}</time>
                 {isAuthenticated && (
