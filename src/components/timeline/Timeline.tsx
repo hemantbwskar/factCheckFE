@@ -4,6 +4,7 @@ import { TimelineItem, TimelineProps } from '../../interfaces/interfaces';
 import TimelineCard from '../cards/TimeLineCard';
 import AddCardModal from '../cards/AddCardModal';
 import { getItemYear, sortTimelineItems } from '../../utils/dateUtils';
+import { normalizeTags } from '../../utils/categoryUtils';
 import { API_URLS } from '../../config/api';
 
 const Timeline: React.FC<TimelineProps> = ({
@@ -75,7 +76,11 @@ const Timeline: React.FC<TimelineProps> = ({
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
-          setTimelineData(sortTimelineItems(data));
+          const normalizedData = data.map((item: any) => ({
+            ...item,
+            tags: normalizeTags(item.tags),
+          }));
+          setTimelineData(sortTimelineItems(normalizedData));
         }
         setLoading(false);
       })
@@ -89,19 +94,26 @@ const Timeline: React.FC<TimelineProps> = ({
   const handleUpdateItem = async (updatedItem: TimelineItem) => {
     if (!isAuthenticated) return;
 
+    const normalizedUpdatedItem = {
+      ...updatedItem,
+      tags: normalizeTags(updatedItem.tags),
+    };
+
     setTimelineData((prev) =>
       sortTimelineItems(
-        prev.map((item) => (item.id === updatedItem.id ? updatedItem : item))
+        prev.map((item) =>
+          item.id === normalizedUpdatedItem.id ? normalizedUpdatedItem : item
+        )
       )
     );
 
-    scrollToItem(updatedItem.id);
+    scrollToItem(normalizedUpdatedItem.id);
 
     try {
-      await fetch(API_URLS.TIMELINE_ITEM(updatedItem.id), {
+      await fetch(API_URLS.TIMELINE_ITEM(normalizedUpdatedItem.id), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedItem),
+        body: JSON.stringify(normalizedUpdatedItem),
       });
     } catch (err) {
       console.error('Failed to update backend:', err);
@@ -121,9 +133,18 @@ const Timeline: React.FC<TimelineProps> = ({
 
       const data = await res.json();
 
-      const createdItem: TimelineItem =
+      const rawCreatedItem =
         data.item ||
         (data.id ? (data as TimelineItem) : { id: Date.now(), ...newItemData });
+
+      const createdItem: TimelineItem = {
+        ...rawCreatedItem,
+        tags: normalizeTags(
+          rawCreatedItem.tags && rawCreatedItem.tags.length > 0
+            ? rawCreatedItem.tags
+            : newItemData.tags
+        ),
+      };
 
       setTimelineData((prev) => sortTimelineItems([...prev, createdItem]));
       setIsAdding(false);
@@ -131,7 +152,11 @@ const Timeline: React.FC<TimelineProps> = ({
     } catch (err) {
       console.error('Failed to save new card to backend:', err);
 
-      const fallbackItem: TimelineItem = { id: Date.now(), ...newItemData };
+      const fallbackItem: TimelineItem = {
+        id: Date.now(),
+        ...newItemData,
+        tags: normalizeTags(newItemData.tags),
+      };
       setTimelineData((prev) => sortTimelineItems([...prev, fallbackItem]));
       setIsAdding(false);
       scrollToItem(fallbackItem.id);

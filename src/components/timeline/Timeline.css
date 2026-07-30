@@ -604,3 +604,40 @@ input[type="date"].timeline-input-small::-webkit-calendar-picker-indicator:hover
     opacity: 1;
   }
 }
+
+/* Tag Pills & Input Styling */
+.timeline-tags-input {
+  margin-bottom: 8px;
+}
+
+.card-tags-list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 0.75rem;
+}
+
+.timeline-tag-pill {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  background-color: rgba(37, 99, 235, 0.1);
+  color: #2563eb;
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: all 0.15s ease-in-out;
+}
+
+.timeline-tag-pill:hover {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .timeline-tag-pill {
+  background-color: rgba(59, 130, 246, 0.18);
+  color: #60a5fa;
+  border-color: rgba(59, 130, 246, 0.3);
+}

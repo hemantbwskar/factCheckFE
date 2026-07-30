@@ -14,25 +14,39 @@ const TimelineCard: React.FC<TimelineCardProps> = ({
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<TimelineItem>(data);
+  const [tagsInput, setTagsInput] = useState<string>((data.tags || []).join(', '));
 
   // Sync state if props change
   React.useEffect(() => {
     setFormData(data);
+    setTagsInput((data.tags || []).join(', '));
   }, [data]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (name === 'tagsInput') {
+      setTagsInput(value);
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSave = () => {
     if (!isAuthenticated) return;
-    const updatedData = {
+    const parsedTags = tagsInput
+      ? tagsInput
+          .split(',')
+          .map((t) => t.trim().replace(/^#/, ''))
+          .filter(Boolean)
+      : [];
+
+    const updatedData: TimelineItem = {
       ...formData,
       date: formatToUTC(formData.date),
       visibility: formData.visibility || 'public',
+      tags: parsedTags,
     };
     onUpdate(updatedData);
     setIsEditing(false);
@@ -40,11 +54,13 @@ const TimelineCard: React.FC<TimelineCardProps> = ({
 
   const handleCancel = () => {
     setFormData(data);
+    setTagsInput((data.tags || []).join(', '));
     setIsEditing(false);
   };
 
   const isPrivate = data.visibility === 'private';
   const usernameTag = data.username || '';
+  const tagsList = data.tags || [];
 
   return (
     <div
@@ -104,6 +120,16 @@ const TimelineCard: React.FC<TimelineCardProps> = ({
                 onChange={handleChange}
                 placeholder="Title"
               />
+
+              <input
+                type="text"
+                name="tagsInput"
+                className="timeline-input-small timeline-tags-input"
+                value={tagsInput}
+                onChange={handleChange}
+                placeholder="Tags (comma separated: e.g. BJP, Election, Policy)"
+              />
+
               <textarea
                 name="description"
                 className="timeline-textarea-description"
@@ -216,6 +242,15 @@ const TimelineCard: React.FC<TimelineCardProps> = ({
             <div className="timeline-card-body">
               <h3 className="timeline-card-title">{data.title}</h3>
               <p className="timeline-card-description">{data.description}</p>
+              {tagsList.length > 0 && (
+                <div className="card-tags-list">
+                  {tagsList.map((tag, idx) => (
+                    <span key={idx} className="timeline-tag-pill">
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
           </>
         )}

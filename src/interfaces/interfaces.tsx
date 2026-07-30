@@ -6,6 +6,7 @@ export interface TimelineItem {
   description: string;
   visibility?: 'public' | 'private';
   username?: string;
+  tags?: string[];
 }
 
 export interface TimelineProps {

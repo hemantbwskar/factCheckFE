@@ -7,9 +7,10 @@ import { CATEGORY_OPTIONS, getIconForCategory } from '../../utils/categoryUtils'
 const getInitialState = () => ({
   title: '',
   date: getTodayInputDate(),
-  category: 'Planning',
+  category: 'Achievements',
   description: '',
   visibility: 'public' as 'public' | 'private',
+  tagsInput: '',
 });
 
 const AddCardModal: React.FC<AddCardProps> = ({ onAdd, onCancel, currentUser }) => {
@@ -26,12 +27,25 @@ const AddCardModal: React.FC<AddCardProps> = ({ onAdd, onCancel, currentUser }) 
     e.preventDefault();
     if (!formData.title.trim()) return;
     const userTag = currentUser?.username || currentUser?.name || '';
+    
+    // Parse comma-separated tags into array
+    const parsedTags = formData.tagsInput
+      ? formData.tagsInput
+          .split(',')
+          .map((t) => t.trim().replace(/^#/, ''))
+          .filter(Boolean)
+      : [];
+
+    const { tagsInput, ...restData } = formData;
+
     const finalData = {
-      ...formData,
+      ...restData,
       date: formatToUTC(formData.date),
       visibility: formData.visibility || 'public',
       username: userTag,
+      tags: parsedTags,
     };
+
     onAdd(finalData);
     setFormData(getInitialState());
   };
@@ -87,6 +101,16 @@ const AddCardModal: React.FC<AddCardProps> = ({ onAdd, onCancel, currentUser }) 
               placeholder="Event Title"
               required
             />
+
+            <input
+              type="text"
+              name="tagsInput"
+              className="timeline-input-small timeline-tags-input"
+              value={formData.tagsInput}
+              onChange={handleChange}
+              placeholder="Tags (comma separated: e.g. BJP, Election, Policy)"
+            />
+
             <textarea
               name="description"
               className="timeline-textarea-description"
