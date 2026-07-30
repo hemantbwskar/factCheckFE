@@ -8,6 +8,8 @@ import { User } from './interfaces/interfaces';
 import { APP_ROUTES } from './config/api';
 import { Theme, applyTheme, getInitialTheme } from './utils/themeUtils';
 
+import UserProfileComponent from './components/profile/UserProfile';
+
 function App() {
   const [user, setUser] = useState<User | null>(null);
   const [theme, setTheme] = useState<Theme>(getInitialTheme);
@@ -62,6 +64,14 @@ function App() {
             <Route
               path={APP_ROUTES.SIGNIN}
               element={<SignIn onLoginSuccess={handleLoginSuccess} />}
+            />
+            <Route
+              path="/profile"
+              element={<UserProfileComponent currentUser={user} />}
+            />
+            <Route
+              path="/profile/:username"
+              element={<UserProfileComponent currentUser={user} />}
             />
             <Route path="*" element={<Navigate to={APP_ROUTES.HOME} replace />} />
           </Routes>

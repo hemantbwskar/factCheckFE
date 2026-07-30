@@ -76,10 +76,10 @@ const Navbar: React.FC<NavbarProps> = ({
 
           {user ? (
             <div className="user-profile">
-              <div className="user-badge">
+              <Link to="/profile" className="user-badge" title="View Profile">
                 <span className="user-avatar">{user.name.charAt(0).toUpperCase()}</span>
                 <span>{user.name}</span>
-              </div>
+              </Link>
               <button onClick={onLogout} className="signout-btn">
                 Sign Out
               </button>
